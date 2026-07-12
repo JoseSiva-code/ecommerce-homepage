@@ -1,0 +1,47 @@
+/* PT: Remove margens e espaçamentos padrão para termos mais controlo sobre o layout. */
+/* EN: Removes default margins and spacing so we have more control over the layout. */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* PT: Define a fonte principal, a cor de fundo e a cor base do texto da página. */
+/* EN: Sets the main font, background color, and base text color for the page. */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #222;
+}
+
+/* PT: Estiliza o cabeçalho com fundo escuro, texto claro e espaçamento interno. */
+/* EN: Styles the header with a dark background, light text, and inner spacing. */
+header {
+    background-color: #222;
+    color: #fff;
+    padding: 24px;
+    text-align: center;
+}
+
+/* PT: Adiciona espaço à volta do conteúdo principal da página. */
+/* EN: Adds space around the main content of the page. */
+main {
+    padding: 32px;
+}
+
+/* PT: Organiza os produtos numa grelha flexível com espaço entre os cards. */
+/* EN: Organizes the products in a flexible grid with space between the cards. */
+#products {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+}
+
+/* PT: Dá fundo branco, espaçamento interno e cantos arredondados a cada card de produto. */
+/* EN: Gives each product card a white background, inner spacing, and rounded corners. */
+.product-card {
+    background-color: #fff;
+    padding: 16px;
+    border-radius: 8px;
+    text-align: center;
+}
