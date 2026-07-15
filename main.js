@@ -74,6 +74,24 @@ function showProducts(products) {
             // PT: Define o texto visível do botão.
             // EN: Defines the visible text of the button.
             addToCartButton.textContent = "Add to cart";
+
+            // PT: Quando o botão é clicado, chama a função externa e mostra feedback visual ao utilizador.
+            // EN: When the button is clicked, calls the external function and shows visual feedback to the user.
+            addToCartButton.addEventListener("click", async () => {
+                addToCartButton.textContent = "Adding...";
+
+                await addProductToCart(product);
+
+                addToCartButton.textContent = "Added";
+
+                // PT: Volta o texto do botão ao estado inicial depois de dois segundos.
+                // EN: Returns the button text to its initial state after two seconds.
+                setTimeout(() => {
+                    addToCartButton.textContent = "Add to cart";
+                }, 2000);
+            });
+
+                 
             
             // PT: Adiciona a imagem do produto dentro do card.
             // EN: Adds the product image inside the card.
