@@ -80,7 +80,21 @@ function showProducts(products) {
             addToCartButton.addEventListener("click", async () => {
                 addToCartButton.textContent = "Adding...";
 
-                await addProductToCart(product);
+                // PT: Desativa o botão enquanto o produto está a ser enviado para o carrinho.
+                // EN: Disables the button while the product is being sent to the cart.
+                addToCartButton.disabled = true;
+
+                // PT: Mantém o estado "Adding..." visível durante dois segundos antes de continuar.
+                // EN: Keeps the "Adding..." state visible for two seconds before continuing.
+                await new Promise((resolve) => setTimeout(resolve, 2000));
+
+                // PT: Espera a API responder e guarda o carrinho atualizado.
+                // EN: Waits for the API response and stores the updated cart.
+                const updatedCart = await addProductToCart(product);
+
+                // PT: Mostra no main.js o resultado recebido da função externa.
+                // EN: Shows in main.js the result received from the external function.
+                console.log(updatedCart);
 
                 addToCartButton.textContent = "Added";
 
@@ -88,7 +102,10 @@ function showProducts(products) {
                 // EN: Returns the button text to its initial state after two seconds.
                 setTimeout(() => {
                     addToCartButton.textContent = "Add to cart";
-                }, 2000);
+                    // PT: Reativa o botão depois de terminar o feedback visual.
+                    // EN: Enables the button again after the visual feedback finishes.
+                    addToCartButton.disabled = false;
+                }, 3000);
             });
 
                  

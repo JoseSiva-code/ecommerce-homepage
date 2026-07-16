@@ -52,6 +52,9 @@ export async function addProductToCart(product) {
     // PT: Mostra na consola o carrinho atualizado para confirmar que o pedido funcionou.
     // EN: Shows the updated cart in the console to confirm that the request worked.
     console.log(updatedCart);
+    // PT: Devolve o carrinho atualizado para que outros ficheiros possam usar esta informação.
+    // EN: Returns the updated cart so other files can use this information.
+    return updatedCart;
 }
 
     
