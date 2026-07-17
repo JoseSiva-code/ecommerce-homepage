@@ -1,6 +1,6 @@
 // PT: Cria a classe Ecommerce para organizar produtos e carrinho de compras.
 // EN: Creates the Ecommerce class to organize products and shopping cart.
-class Ecommerce {
+export class Ecommerce {
     // PT: Prepara a lista de produtos e o carrinho quando criamos um novo Ecommerce.
     // EN: Prepares the product list and cart when we create a new Ecommerce.
     constructor() {
@@ -52,6 +52,38 @@ class Ecommerce {
         // PT: Procura e devolve o produto que tem o mesmo id recebido.
         // EN: Searches and returns the product that has the same received id.
         return this.products.find((product) => product.id === productId);
+    }
+
+    // PT: Devolve produtos com preço entre o valor inicial e o valor final.
+    // EN: Returns products with price between the initial value and the final value.
+    getProductsByPrice(initialPrice, finalPrice) {
+        // PT: Filtra produtos com preço maior ou igual ao inicial e menor ou igual ao final.
+        // EN: Filters products with price greater than or equal to the initial value and less than or equal to the final value.
+        return this.products.filter((product) => product.price >= initialPrice && product.price <= finalPrice);
+    }
+    
+    // PT: Adiciona um produto ao carrinho de compras.
+    // EN: Adds a product to the shopping cart.
+    addProductToCart(product) {
+        // PT: Coloca o produto recebido no fim do array do carrinho.
+        // EN: Places the received product at the end of the cart array.
+        this.cart.push(product);
+    }
+
+    // PT: Devolve a lista de produtos que estão no carrinho.
+    // EN: Returns the list of products that are in the cart.
+    getCart() {
+        // PT: Devolve o array com todos os produtos adicionados ao carrinho.
+        // EN: Returns the array with all products added to the cart.
+        return this.cart;
+    }
+
+    // PT: Devolve a soma dos preços de todos os produtos no carrinho.
+    // EN: Returns the sum of the prices of all products in the cart.
+    getCartTotalPrice() {
+        // PT: Soma os preços dos produtos do carrinho começando em zero.
+        // EN: Sums the prices of the cart products starting from zero.
+        return this.cart.reduce((total, product) => total + product.price, 0);
     }
 }
 
