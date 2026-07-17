@@ -62,6 +62,15 @@ main {
     margin-top: 16px;
 }
 
+/* PT: Destaca o preço do produto com mais peso visual e espaçamento. */
+/* EN: Highlights the product price with stronger visual weight and spacing. */
+.product-price {
+    margin-top: 12px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #2f6f4e;
+}
+
 /* PT: Em ecrãs médios, reduz a grelha para duas colunas. */
 /* EN: On medium screens, reduces the grid to two columns. */
 @media (max-width: 900px) {

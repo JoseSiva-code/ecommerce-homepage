@@ -67,6 +67,18 @@ function showProducts(products) {
             // EN: Places the product name inside the created heading.
             productTitle.textContent = product.title;
 
+            // PT: Cria um parágrafo para mostrar o preço do produto no card.
+            // EN: Creates a paragraph to show the product price inside the card.
+            const productPrice = document.createElement("p");
+
+            // PT: Define o texto do preço usando o valor price recebido da API.
+            // EN: Defines the price text using the price value received from the API.
+            productPrice.textContent = `$${product.price}`;
+
+            // PT: Adiciona uma classe CSS ao preço para o destacar visualmente.
+            // EN: Adds a CSS class to the price to visually highlight it.
+            productPrice.classList.add("product-price");
+
             // PT: Cria um botão para permitir adicionar o produto ao carrinho.
             // EN: Creates a button to allow adding the product to the cart.
             const addToCartButton = document.createElement("button");
@@ -117,6 +129,10 @@ function showProducts(products) {
             // PT: Adiciona o título do produto dentro do card, por baixo da imagem.
             // EN: Adds the product title inside the card, below the image.
             productCard.appendChild(productTitle);
+
+            // PT: Adiciona o preço do produto dentro do card, por baixo do título.
+            // EN: Adds the product price inside the card, below the title.
+            productCard.appendChild(productPrice);
 
             // PT: Adiciona o botão ao card por baixo do título do produto.
             // EN: Adds the button to the card below the product title.
