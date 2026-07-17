@@ -14,13 +14,41 @@ body {
     color: #222;
 }
 
-/* PT: Estiliza o cabeçalho com fundo escuro, texto claro e espaçamento interno. */
-/* EN: Styles the header with a dark background, light text, and inner spacing. */
+/* PT: Organiza o cabeçalho com marca à esquerda e navegação à direita. */
+/* EN: Organizes the header with the brand on the left and navigation on the right. */
 header {
     background-color: #222;
     color: #fff;
-    padding: 24px;
-    text-align: center;
+    padding: 24px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* PT: Coloca os links do menu lado a lado com espaçamento entre eles. */
+/* EN: Places the menu links side by side with spacing between them. */
+nav {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+/* PT: Remove o sublinhado dos links e deixa o texto do menu branco. */
+/* EN: Removes link underlines and keeps the menu text white. */
+nav a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+/* PT: Dá destaque visual ao contador do carrinho no header. */
+/* EN: Gives visual emphasis to the cart counter in the header. */
+#cart-counter {
+    background-color: #fff;
+    color: #222;
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-weight: bold;
 }
 
 /* PT: Adiciona espaço à volta do conteúdo principal da página. */

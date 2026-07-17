@@ -10,6 +10,14 @@ const productsUrl = "https://fakestoreapi.com/products";
 // EN: Selects the #products area in the HTML to place the product cards there.
 const productsSection = document.querySelector("#products");
 
+// PT: Seleciona o contador do carrinho para atualizar o número de produtos adicionados.
+// EN: Selects the cart counter to update the number of added products.
+const cartCounter = document.querySelector("#cart-counter");
+
+// PT: Guarda o número de produtos adicionados ao carrinho.
+// EN: Stores the number of products added to the cart.
+let cartCount = 0;
+
 // PT: Cria uma função assíncrona para buscar os produtos à API sem bloquear a página.
 // EN: Creates an async function to fetch the products from the API without blocking the page.
 async function getProducts() {
@@ -107,8 +115,18 @@ function showProducts(products) {
                 // PT: Mostra no main.js o resultado recebido da função externa.
                 // EN: Shows in main.js the result received from the external function.
                 console.log(updatedCart);
-
+                
+                // PT: Mostra no botão que o produto foi adicionado ao carrinho.
+                // EN: Shows on the button that the product was added to the cart.
                 addToCartButton.textContent = "Added";
+
+                // PT: Aumenta o contador do carrinho depois de adicionar um produto.
+                // EN: Increases the cart counter after adding a product.
+                cartCount++;
+
+                // PT: Atualiza o texto do contador no header com o novo total.
+                // EN: Updates the counter text in the header with the new total.
+                cartCounter.textContent = `Cart (${cartCount})`;
 
                 // PT: Volta o texto do botão ao estado inicial depois de dois segundos.
                 // EN: Returns the button text to its initial state after two seconds.
