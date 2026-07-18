@@ -57,12 +57,89 @@ main {
     padding: 32px;
 }
 
+/* PT: Estiliza o rodapé com fundo escuro e texto centralizado para fechar a página. */
+/* EN: Styles the footer with a dark background and centered text to close the page. */
+footer {
+    margin-top: 48px;
+    padding: 32px;
+    background-color: #222;
+    color: #fff;
+    text-align: center;
+}
+
+/* PT: Cria uma secção hero destacada para apresentar a loja ao utilizador. */
+/* EN: Creates a highlighted hero section to introduce the store to the user. */
+.hero {
+    background-color: #fff;
+    padding: 48px 32px;
+    margin-bottom: 32px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+/* PT: Organiza os filtros numa linha flexível e separa-os dos produtos. */
+/* EN: Organizes the filters in a flexible row and separates them from the products. */
+.filters {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+}
+
+/* PT: Estiliza os botões dos filtros com aparência limpa e clicável. */
+/* EN: Styles the filter buttons with a clean and clickable appearance. */
+.filters button {
+    padding: 10px 18px;
+    border: 1px solid #222;
+    background-color: #fff;
+    color: #222;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* PT: Dá feedback visual quando o utilizador passa o rato sobre um filtro. */
+/* EN: Gives visual feedback when the user hovers over a filter. */
+.filters button:hover {
+    background-color: #222;
+    color: #fff;
+}
+
+/* PT: Destaca o filtro atualmente selecionado pelo utilizador. */
+/* EN: Highlights the filter currently selected by the user. */
+.filters button.active {
+    background-color: #222;
+    color: #fff;
+}
+
 /* PT: Organiza os produtos numa grelha flexível com espaço entre os cards. */
 /* EN: Organizes the products in a flexible grid with space between the cards. */
 #products {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 24px;
+}
+
+/* PT: Estiliza a secção de produtos quando ela está a mostrar uma mensagem em vez dos cards. */
+/* EN: Styles the products section when it is showing a message instead of the cards. */
+#products.products-message {
+    display: block;
+    text-align: center;
+    padding: 48px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #555;
+    background-color: #fff;
+    border-radius: 8px;
+}
+
+/* PT: Dá uma cor de aviso à mensagem quando os produtos não carregam corretamente. */
+/* EN: Gives the message a warning color when the products do not load correctly. */
+#products.products-error {
+    color: #b00020;
+    background-color: #fff5f5;
+    border: 1px solid #f0b4b4;
 }
 
 /* PT: Cria um card mais limpo, consistente e com transição suave. */
@@ -122,6 +199,32 @@ main {
 @media (max-width: 600px) {
     #products {
         grid-template-columns: 1fr;
+    }
+
+    /* PT: Coloca o header em coluna para caber melhor em ecrãs pequenos. */
+    /* EN: Places the header in a column so it fits better on small screens. */
+    header {
+        flex-direction: column;
+        gap: 16px;
+        text-align: center;
+    }
+
+    /* PT: Reduz o espaçamento principal para aproveitar melhor o espaço no telemóvel. */
+    /* EN: Reduces the main spacing to make better use of space on mobile. */
+    main {
+        padding: 20px;
+    }
+
+    /* PT: Reduz o tamanho da hero para ficar mais equilibrada em ecrãs pequenos. */
+    /* EN: Reduces the hero size to look more balanced on small screens. */
+    .hero {
+        padding: 32px 20px;
+    }
+
+    /* PT: Reduz o espaçamento do footer em ecrãs pequenos. */
+    /* EN: Reduces the footer spacing on small screens. */
+    footer {
+        padding: 24px 20px;
     }
 }
 
