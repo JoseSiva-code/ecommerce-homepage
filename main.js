@@ -115,6 +115,22 @@ function showProducts(products) {
             // EN: Places the product name inside the created heading.
             productTitle.textContent = product.title;
 
+            // PT: Cria uma pequena etiqueta para mostrar a categoria do produto.
+            // EN: Creates a small label to show the product category.
+            const productCategory = document.createElement("span");
+
+            // PT: Mostra "Backpacks" na etiqueta quando o produto for uma mochila.
+            // EN: Shows "Backpacks" in the label when the product is a backpack.
+            if (product.title.toLowerCase().includes("backpack")) {
+                productCategory.textContent = "Backpacks";
+            } else {
+                productCategory.textContent = product.category;
+            }
+
+            // PT: Adiciona uma classe CSS à categoria para a estilizar como etiqueta.
+            // EN: Adds a CSS class to the category so it can be styled as a label.
+            productCategory.classList.add("product-category");
+
             // PT: Cria um parágrafo para mostrar o preço do produto no card.
             // EN: Creates a paragraph to show the product price inside the card.
             const productPrice = document.createElement("p");
@@ -126,6 +142,18 @@ function showProducts(products) {
             // PT: Adiciona uma classe CSS ao preço para o destacar visualmente.
             // EN: Adds a CSS class to the price to visually highlight it.
             productPrice.classList.add("product-price");
+
+            // PT: Cria uma zona para escolher quantidades por tamanho do artigo.
+            // EN: Creates an area to choose quantities by item size.
+            const sizeOptions = document.createElement("div");
+
+            // PT: Adiciona uma classe CSS à zona dos tamanhos para ser estilizada depois.
+            // EN: Adds a CSS class to the size area so it can be styled later.
+            sizeOptions.classList.add("size-options");
+
+            // PT: Guarda as opções certas para o tipo de produto atual.
+            // EN: Stores the correct options for the current product type.
+            const productOptions = getProductOptions(product);
 
             // PT: Cria um botão para permitir adicionar o produto ao carrinho.
             // EN: Creates a button to allow adding the product to the cart.
@@ -188,6 +216,10 @@ function showProducts(products) {
             // EN: Adds the product title inside the card, below the image.
             productCard.appendChild(productTitle);
 
+            // PT: Adiciona a categoria do produto por baixo do título.
+            // EN: Adds the product category below the title.
+            productCard.appendChild(productCategory);
+
             // PT: Adiciona o preço do produto dentro do card, por baixo do título.
             // EN: Adds the product price inside the card, below the title.
             productCard.appendChild(productPrice);
@@ -200,6 +232,122 @@ function showProducts(products) {
             // EN: Adds the completed card inside the products section in the HTML.
             productsSection.appendChild(productCard);
     });
+}
+
+// PT: Define opções personalizadas para cada tipo de produto.
+// EN: Defines custom options for each product type.
+function getProductOptions(product) {
+    // PT: Cria uma versão do título em letras minúsculas para identificar produtos especiais.
+    // EN: Creates a lowercase version of the title to identify special products.
+    const productTitle = product.title.toLowerCase();
+
+    // PT: Se o produto for uma mochila, devolve cores simuladas.
+    // EN: If the product is a backpack, returns simulated colors.
+    if (productTitle.includes("backpack")) {
+        return {
+            colors: ["Black", "Forest Green", "Navy", "Brown", "Grey"]
+        };
+    }
+
+    // PT: Verifica se o produto pertence a uma categoria de roupa.
+    // EN: Checks if the product belongs to a clothing category.
+    if (product.category === "men's clothing" || product.category === "women's clothing") {
+        // PT: Devolve tamanhos e cores para produtos de roupa.
+        // EN: Returns sizes and colors for clothing products.
+        return {
+            sizes: ["XS", "S", "M", "L", "XL"],
+            colors: ["Black", "White", "Blue", "Red", "Beige"]
+        };
+    }
+
+    // PT: Verifica se o produto pertence à categoria de eletrónicos.
+    // EN: Checks if the product belongs to the electronics category.
+    if (product.category === "electronics") {
+        // PT: Se o produto for um monitor, devolve tamanhos de ecrã simulados.
+        // EN: If the product is a monitor, returns simulated screen sizes.
+        if (productTitle.includes("monitor") || productTitle.includes("acer")) {
+            return {
+                sizes: [
+                    { label: '24"', priceModifier: 0 },
+                    { label: '27"', priceModifier: 40 },
+                    { label: '32"', priceModifier: 90 },
+                    { label: '49"', priceModifier: 180 }
+                ]
+            };
+        }
+
+        // PT: Se o produto for um disco gaming para PlayStation, devolve capacidades e plataformas simuladas.
+        // EN: If the product is a gaming drive for PlayStation, returns simulated capacities and platforms.
+        if (productTitle.includes("playstation") || productTitle.includes("gaming drive")) {
+            return {
+                capacities: [
+                    { label: "2TB", priceModifier: 0 },
+                    { label: "4TB", priceModifier: 60 },
+                    { label: "5TB", priceModifier: 90 },
+                    { label: "8TB", priceModifier: 160 }
+                ],
+                platforms: ["PS4", "PS5", "PC"]
+            };
+        }
+
+        // PT: Se o produto for um disco externo, devolve capacidades simuladas.
+        // EN: If the product is an external hard drive, returns simulated capacities.
+        if (productTitle.includes("external hard drive")) {
+            return {
+                capacities: [
+                    { label: "1TB", priceModifier: 0 },
+                    { label: "2TB", priceModifier: 35 },
+                    { label: "4TB", priceModifier: 80 },
+                    { label: "5TB", priceModifier: 110 }
+                ]
+            };
+        }
+
+        // PT: Se o produto for armazenamento, devolve capacidades simuladas.
+        // EN: If the product is storage, returns simulated capacities.
+        if (productTitle.includes("hard drive") || productTitle.includes("ssd")) {
+            return {
+                capacities: [
+                    { label: "256GB", priceModifier: 0 },
+                    { label: "512GB", priceModifier: 25 },
+                    { label: "1TB", priceModifier: 55 },
+                    { label: "2TB", priceModifier: 100 }
+                ]
+            };
+        }
+        
+        // PT: Devolve versões simuladas para produtos eletrónicos.
+        // EN: Returns simulated versions for electronics products.
+        return {
+            versions: ["Standard", "Extended Warranty", "Premium Setup", "Bundle Pack"]
+        };
+    }
+
+    // PT: Verifica se o produto pertence à categoria de joias.
+    // EN: Checks if the product belongs to the jewelry category.
+    if (product.category === "jewelery") {
+        // PT: Se a joia for uma pulseira, devolve comprimentos simulados em centímetros.
+        // EN: If the jewelry item is a bracelet, returns simulated lengths in centimeters.
+        if (productTitle.includes("bracelet")) {
+            return {
+                lengths: ["16cm", "18cm", "20cm", "22cm"],
+                materials: ["Gold", "Silver", "Rose Gold"]
+            };
+        }
+
+        // PT: Para produtos tratados como anéis, devolve medidas e materiais simulados.
+        // EN: For products treated as rings, returns simulated sizes and materials.
+        return {
+            sizes: ["5", "6", "7", "8", "9"],
+            materials: ["Gold", "Silver", "Rose Gold"]
+        };
+    }
+
+    // PT: Devolve uma opção simples para produtos sem variantes específicas.
+    // EN: Returns a simple option for products without specific variants.
+    return {
+        quantity: true
+    };
 }
 
 // PT: Cria uma função para preparar os cliques nos botões de filtro.
@@ -229,6 +377,14 @@ function setupFilters() {
             // EN: If the selected category is "all", shows all products again.
             if (selectedCategory === "all") {
                 showProducts(allProducts);
+            } else if (selectedCategory === "backpacks") {
+                // PT: Cria uma nova lista apenas com produtos que tenham backpack no título.
+                // EN: Creates a new list only with products that have backpack in the title.
+                const filteredProducts = allProducts.filter((product) => product.title.toLowerCase().includes("backpack"));
+
+                // PT: Mostra no ecrã apenas as mochilas filtradas.
+                // EN: Shows on the screen only the filtered backpacks.
+                showProducts(filteredProducts);
             } else {
                 // PT: Cria uma nova lista apenas com os produtos da categoria escolhida.
                 // EN: Creates a new list only with the products from the selected category.
