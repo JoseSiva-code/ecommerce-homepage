@@ -234,6 +234,51 @@ function showProducts(products) {
     });
 }
 
+// PT: Cria a interface visual das opções do produto dentro do card.
+// EN: Creates the visual interface for the product options inside the card.
+function createProductOptions(productOptions) {
+    // PT: Cria um container para guardar todos os grupos de opções do produto.
+    // EN: Creates a container to hold all product option groups.
+    const optionsContainer = document.createElement("div");
+
+    // PT: Adiciona uma classe CSS ao container das opções para o estilizar depois.
+    // EN: Adds a CSS class to the options container so it can be styled later.
+    optionsContainer.classList.add("product-options");
+    // PT: Verifica se o produto tem opções de tamanho.
+    // EN: Checks if the product has size options.
+    if (productOptions.sizes) {
+        // PT: Cria um pequeno título para identificar as opções de tamanho.
+        // EN: Creates a small title to identify the size options.
+        const sizeTitle = document.createElement("p");
+
+        // PT: Define o texto do título do grupo de tamanhos.
+        // EN: Sets the text for the size group title.
+        sizeTitle.textContent = "Size";
+        // PT: Adiciona uma classe CSS ao título do grupo de opções.
+        // EN: Adds a CSS class to the option group title.
+        sizeTitle.classList.add("option-title");
+
+        // PT: Adiciona o título de tamanhos ao container das opções.
+        // EN: Adds the size title to the options container.
+        optionsContainer.appendChild(sizeTitle);
+
+        // PT: Cria uma linha para organizar os tamanhos lado a lado.
+        // EN: Creates a row to organize the sizes side by side.
+        const sizeList = document.createElement("div");
+
+        // PT: Adiciona uma classe CSS à linha dos tamanhos.
+        // EN: Adds a CSS class to the size row.
+        sizeList.classList.add("option-list");
+
+        // PT: Percorre cada tamanho para criar um campo visual de quantidade.
+        // EN: Loops through each size to create a visual quantity field.
+        productOptions.sizes.forEach((size) => {
+        });
+    }
+    // PT: Devolve o container para ele poder ser adicionado ao card do produto.
+    // EN: Returns the container so it can be added to the product card.
+    return optionsContainer;
+}
 // PT: Define opções personalizadas para cada tipo de produto.
 // EN: Defines custom options for each product type.
 function getProductOptions(product) {
