@@ -14,6 +14,22 @@ const productsSection = document.querySelector("#products");
 // EN: Selects the cart counter to update the number of added products.
 const cartCounter = document.querySelector("#cart-counter");
 
+// PT: Seleciona o subtotal do carrinho para atualizar o valor total dos produtos adicionados.
+// EN: Selects the cart subtotal to update the total value of added products.
+const cartSubtotal = document.querySelector("#cart-subtotal");
+
+// PT: Seleciona o campo do IVA para mostrar quanto imposto está incluído no subtotal.
+// EN: Selects the VAT field to show how much tax is included in the subtotal.
+const cartVat = document.querySelector("#cart-vat");
+
+// PT: Seleciona o botão que limpa todos os produtos do carrinho.
+// EN: Selects the button that clears all products from the cart.
+const clearCartButton = document.querySelector("#clear-cart-button");
+
+// PT: Seleciona a zona onde vão aparecer os artigos adicionados ao carrinho.
+// EN: Selects the area where the added cart items will appear.
+const cartItemsList = document.querySelector("#cart-items");
+
 // PT: Seleciona todos os botões de filtro para podermos adicionar eventos de clique.
 // EN: Selects all filter buttons so we can add click events to them.
 const filterButtons = document.querySelectorAll(".filters button");
@@ -21,6 +37,22 @@ const filterButtons = document.querySelectorAll(".filters button");
 // PT: Guarda o número de produtos adicionados ao carrinho.
 // EN: Stores the number of products added to the cart.
 let cartCount = 0;
+
+// PT: Guarda o valor total dos produtos adicionados ao carrinho.
+// EN: Stores the total value of products added to the cart.
+let cartSubtotalValue = 0;
+
+// PT: Guarda cada artigo adicionado para podermos remover apenas o artigo escolhido.
+// EN: Stores each added item so we can remove only the chosen item.
+let cartItems = [];
+
+// PT: Guarda se a lista do carrinho está aberta para mostrar todos os artigos.
+// EN: Stores whether the cart list is open to show all items.
+let isCartExpanded = false;
+
+// PT: Guarda a taxa de IVA incluída nos preços apresentados.
+// EN: Stores the VAT rate included in the displayed prices.
+const vatRate = 0.19;
 
 // PT: Guarda todos os produtos recebidos da API para podermos filtrar sem pedir dados outra vez.
 // EN: Stores all products received from the API so we can filter without fetching data again.
@@ -143,17 +175,13 @@ function showProducts(products) {
             // EN: Adds a CSS class to the price to visually highlight it.
             productPrice.classList.add("product-price");
 
-            // PT: Cria uma zona para escolher quantidades por tamanho do artigo.
-            // EN: Creates an area to choose quantities by item size.
-            const sizeOptions = document.createElement("div");
-
-            // PT: Adiciona uma classe CSS à zona dos tamanhos para ser estilizada depois.
-            // EN: Adds a CSS class to the size area so it can be styled later.
-            sizeOptions.classList.add("size-options");
-
             // PT: Guarda as opções certas para o tipo de produto atual.
             // EN: Stores the correct options for the current product type.
             const productOptions = getProductOptions(product);
+
+            // PT: Cria os elementos visuais das opções do produto.
+            // EN: Creates the visual elements for the product options.
+            const productOptionsElement = createProductOptions(productOptions);
 
             // PT: Cria um botão para permitir adicionar o produto ao carrinho.
             // EN: Creates a button to allow adding the product to the cart.
@@ -190,11 +218,35 @@ function showProducts(products) {
 
                 // PT: Aumenta o contador do carrinho depois de adicionar um produto.
                 // EN: Increases the cart counter after adding a product.
-                cartCount++;
+                const selectedQuantity = Number(productOptionsElement.querySelector(".option-quantity").value);
 
-                // PT: Atualiza o texto do contador no header com o novo total.
-                // EN: Updates the counter text in the header with the new total.
-                cartCounter.textContent = `Cart (${cartCount})`;
+                // PT: Soma todos os preços extra das opções selecionadas no produto.
+                // EN: Adds all extra prices from the selected product options.
+                const selectedOptionsExtraPrice = Array.from(productOptionsElement.querySelectorAll(".option-select")).reduce((total, select) => {
+                    return total + Number(select.selectedOptions[0].dataset.priceModifier);
+                }, 0);
+
+                // PT: Guarda o texto das opções escolhidas para aparecerem no carrinho.
+                // EN: Stores the selected option text so it can appear in the cart.
+                const selectedOptionsText = Array.from(productOptionsElement.querySelectorAll(".option-select")).map((select) => select.value).join(", ");
+
+                // PT: Calcula o preço final de uma unidade com as opções escolhidas.
+                // EN: Calculates the final unit price with the selected options.
+                const cartItemUnitPrice = product.price + selectedOptionsExtraPrice;
+
+                // PT: Guarda o artigo adicionado numa lista para permitir removê-lo individualmente.
+                // EN: Stores the added item in a list so it can be removed individually.
+                cartItems.push({
+                    title: product.title,
+                    options: selectedOptionsText || "Default",
+                    quantity: selectedQuantity,
+                    unitPrice: cartItemUnitPrice,
+                    totalPrice: cartItemUnitPrice * selectedQuantity
+                });
+
+                // PT: Atualiza o contador, subtotal, IVA e lista visual do carrinho.
+                // EN: Updates the counter, subtotal, VAT, and visible cart list.
+                updateCartDisplay();
 
                 // PT: Volta o texto do botão ao estado inicial depois de dois segundos.
                 // EN: Returns the button text to its initial state after two seconds.
@@ -224,6 +276,10 @@ function showProducts(products) {
             // EN: Adds the product price inside the card, below the title.
             productCard.appendChild(productPrice);
 
+            // PT: Adiciona as opções do produto ao card, por baixo do preço.
+            // EN: Adds the product options to the card, below the price.
+            productCard.appendChild(productOptionsElement);
+
             // PT: Adiciona o botão ao card por baixo do título do produto.
             // EN: Adds the button to the card below the product title.
             productCard.appendChild(addToCartButton);
@@ -231,6 +287,170 @@ function showProducts(products) {
             // PT: Adiciona o card completo dentro da section de produtos no HTML.
             // EN: Adds the completed card inside the products section in the HTML.
             productsSection.appendChild(productCard);
+    });
+}
+
+// PT: Atualiza todos os valores visíveis do carrinho a partir da lista de artigos guardada.
+// EN: Updates all visible cart values from the stored items list.
+function updateCartDisplay() {
+    // PT: Soma todas as quantidades guardadas para saber quantos artigos existem no carrinho.
+    // EN: Adds all stored quantities to know how many items exist in the cart.
+    cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
+
+    // PT: Soma todos os preços totais guardados para calcular o subtotal.
+    // EN: Adds all stored total prices to calculate the subtotal.
+    cartSubtotalValue = cartItems.reduce((total, item) => total + item.totalPrice, 0);
+
+    // PT: Calcula o IVA incluído no subtotal atual.
+    // EN: Calculates the VAT included in the current subtotal.
+    const includedVat = cartSubtotalValue - cartSubtotalValue / (1 + vatRate);
+
+    // PT: Atualiza o contador visível do carrinho.
+    // EN: Updates the visible cart counter.
+    cartCounter.textContent = `Cart (${cartCount})`;
+
+    // PT: Atualiza o subtotal visível do carrinho.
+    // EN: Updates the visible cart subtotal.
+    cartSubtotal.textContent = `Subtotal: $${cartSubtotalValue.toFixed(2)}`;
+
+    // PT: Atualiza o IVA visível do carrinho.
+    // EN: Updates the visible cart VAT.
+    cartVat.textContent = `VAT incl.: $${includedVat.toFixed(2)}`;
+
+    // PT: Limpa a lista visual antes de desenhar novamente os artigos atuais.
+    // EN: Clears the visible list before drawing the current items again.
+    cartItemsList.textContent = "";
+
+    // PT: Remove classes antigas antes de decidir se a lista fica aberta ou minimizada.
+    // EN: Removes old classes before deciding if the list stays open or collapsed.
+    cartItemsList.classList.remove("cart-collapsed", "cart-expanded");
+
+    // PT: Se o carrinho estiver vazio, a lista não precisa de estado aberto ou minimizado.
+    // EN: If the cart is empty, the list does not need an open or collapsed state.
+    if (cartItems.length === 0) {
+        isCartExpanded = false;
+    }
+
+    // PT: Quando existe pelo menos um artigo, aplica a classe certa conforme o estado atual.
+    // EN: When there is at least one item, applies the correct class based on the current state.
+    if (cartItems.length > 0) {
+        cartItemsList.classList.add(isCartExpanded ? "cart-expanded" : "cart-collapsed");
+    }
+
+    // PT: Percorre cada artigo do carrinho para criar uma linha com botão de remover.
+    // EN: Loops through each cart item to create a row with a remove button.
+    cartItems.forEach((item, index) => {
+        // PT: Cria a linha visual de um artigo dentro do carrinho.
+        // EN: Creates the visual row for one item inside the cart.
+        const cartItem = document.createElement("div");
+
+        // PT: Adiciona uma classe CSS para estilizar cada linha do carrinho.
+        // EN: Adds a CSS class to style each cart row.
+        cartItem.classList.add("cart-item");
+
+        // PT: Cria o texto com nome, opções, quantidade e preço do artigo.
+        // EN: Creates the text with the item name, options, quantity, and price.
+        const cartItemText = document.createElement("span");
+
+        // PT: Mostra um resumo curto do artigo adicionado.
+        // EN: Shows a short summary of the added item.
+        cartItemText.textContent = `${item.quantity}x ${item.title} (${item.options}) - $${item.totalPrice.toFixed(2)}`;
+
+        // PT: Cria um pequeno grupo para escolher a quantidade a remover e confirmar a remoção.
+        // EN: Creates a small group to choose the quantity to remove and confirm the removal.
+        const removeControls = document.createElement("div");
+
+        // PT: Adiciona uma classe CSS ao grupo dos controlos de remoção.
+        // EN: Adds a CSS class to the removal controls group.
+        removeControls.classList.add("cart-remove-controls");
+
+        // PT: Cria o campo onde o cliente escreve quantas unidades quer remover.
+        // EN: Creates the field where the customer types how many units they want to remove.
+        const removeQuantityInput = document.createElement("input");
+
+        // PT: Define o campo como numérico para aceitar apenas quantidades.
+        // EN: Sets the field as numeric to accept only quantities.
+        removeQuantityInput.type = "number";
+
+        // PT: Define que pelo menos uma unidade pode ser removida.
+        // EN: Defines that at least one unit can be removed.
+        removeQuantityInput.min = "1";
+
+        // PT: Define que a quantidade máxima a remover é a quantidade existente deste artigo.
+        // EN: Defines that the maximum removable quantity is the existing quantity of this item.
+        removeQuantityInput.max = item.quantity;
+
+        // PT: Começa com uma unidade selecionada para evitar remover tudo por engano.
+        // EN: Starts with one selected unit to avoid removing everything by mistake.
+        removeQuantityInput.value = "1";
+
+        // PT: Adiciona uma classe CSS ao campo de quantidade a remover.
+        // EN: Adds a CSS class to the remove quantity field.
+        removeQuantityInput.classList.add("remove-quantity");
+
+        // PT: Cria o botão para remover a quantidade escolhida deste artigo.
+        // EN: Creates the button to remove the chosen quantity from this item.
+        const removeItemButton = document.createElement("button");
+
+        // PT: Define o texto visível do botão de remoção.
+        // EN: Defines the visible text of the remove button.
+        removeItemButton.textContent = "Remove";
+
+        // PT: Quando clicado, remove apenas a quantidade escolhida deste artigo.
+        // EN: When clicked, removes only the chosen quantity from this item.
+        removeItemButton.addEventListener("click", () => {
+            // PT: Guarda a quantidade escrita pelo cliente no campo de remoção.
+            // EN: Stores the quantity typed by the customer in the removal field.
+            const requestedRemoveQuantity = Number(removeQuantityInput.value);
+
+            // PT: Para a remoção se o valor escrito não for válido.
+            // EN: Stops the removal if the typed value is not valid.
+            if (Number.isNaN(requestedRemoveQuantity) || requestedRemoveQuantity < 1) {
+                return;
+            }
+
+            // PT: Garante que a quantidade removida nunca passa da quantidade disponível.
+            // EN: Ensures the removed quantity never exceeds the available quantity.
+            const removeQuantity = Math.min(requestedRemoveQuantity, item.quantity);
+
+            // PT: Reduz a quantidade deste artigo no carrinho.
+            // EN: Reduces this item's quantity in the cart.
+            item.quantity -= removeQuantity;
+
+            // PT: Recalcula o preço total deste artigo depois da redução de quantidade.
+            // EN: Recalculates this item's total price after the quantity reduction.
+            item.totalPrice = item.unitPrice * item.quantity;
+
+            // PT: Se a quantidade chegar a zero, remove a linha completa do carrinho.
+            // EN: If the quantity reaches zero, removes the complete row from the cart.
+            if (item.quantity === 0) {
+                cartItems.splice(index, 1);
+            }
+
+            // PT: Atualiza novamente o carrinho depois da remoção.
+            // EN: Updates the cart again after the removal.
+            updateCartDisplay();
+        });
+
+        // PT: Adiciona o campo de quantidade aos controlos de remoção.
+        // EN: Adds the quantity field to the removal controls.
+        removeControls.appendChild(removeQuantityInput);
+
+        // PT: Adiciona o botão aos controlos de remoção.
+        // EN: Adds the button to the removal controls.
+        removeControls.appendChild(removeItemButton);
+
+        // PT: Adiciona o texto do artigo dentro da linha.
+        // EN: Adds the item text inside the row.
+        cartItem.appendChild(cartItemText);
+
+        // PT: Adiciona os controlos de remoção dentro da linha.
+        // EN: Adds the removal controls inside the row.
+        cartItem.appendChild(removeControls);
+
+        // PT: Adiciona a linha completa à lista visual do carrinho.
+        // EN: Adds the complete row to the visible cart list.
+        cartItemsList.appendChild(cartItem);
     });
 }
 
@@ -244,37 +464,109 @@ function createProductOptions(productOptions) {
     // PT: Adiciona uma classe CSS ao container das opções para o estilizar depois.
     // EN: Adds a CSS class to the options container so it can be styled later.
     optionsContainer.classList.add("product-options");
-    // PT: Verifica se o produto tem opções de tamanho.
-    // EN: Checks if the product has size options.
-    if (productOptions.sizes) {
-        // PT: Cria um pequeno título para identificar as opções de tamanho.
-        // EN: Creates a small title to identify the size options.
-        const sizeTitle = document.createElement("p");
 
-        // PT: Define o texto do título do grupo de tamanhos.
-        // EN: Sets the text for the size group title.
-        sizeTitle.textContent = "Size";
-        // PT: Adiciona uma classe CSS ao título do grupo de opções.
-        // EN: Adds a CSS class to the option group title.
-        sizeTitle.classList.add("option-title");
+    // PT: Cria dropdowns pequenos para cada grupo de opções recebido.
+    // EN: Creates small dropdowns for each received option group.
+    Object.keys(productOptions).forEach((optionName) => {
+        // PT: Ignora a opção quantity porque ela será tratada separadamente.
+        // EN: Ignores the quantity option because it will be handled separately.
+        if (optionName === "quantity") {
+            return;
+        }
 
-        // PT: Adiciona o título de tamanhos ao container das opções.
-        // EN: Adds the size title to the options container.
-        optionsContainer.appendChild(sizeTitle);
+        // PT: Cria um grupo visual para uma opção, como tamanho, cor ou material.
+        // EN: Creates a visual group for one option, such as size, color, or material.
+        const optionGroup = document.createElement("label");
 
-        // PT: Cria uma linha para organizar os tamanhos lado a lado.
-        // EN: Creates a row to organize the sizes side by side.
-        const sizeList = document.createElement("div");
+        // PT: Adiciona uma classe CSS ao grupo da opção.
+        // EN: Adds a CSS class to the option group.
+        optionGroup.classList.add("option-group");
 
-        // PT: Adiciona uma classe CSS à linha dos tamanhos.
-        // EN: Adds a CSS class to the size row.
-        sizeList.classList.add("option-list");
+        // PT: Mostra o nome da opção com a primeira letra maiúscula.
+        // EN: Shows the option name with the first letter capitalized.
+        optionGroup.textContent = `${optionName.charAt(0).toUpperCase()}${optionName.slice(1)} `;
 
-        // PT: Percorre cada tamanho para criar um campo visual de quantidade.
-        // EN: Loops through each size to create a visual quantity field.
-        productOptions.sizes.forEach((size) => {
+        // PT: Cria uma pequena lista dropdown para as escolhas disponíveis.
+        // EN: Creates a small dropdown list for the available choices.
+        const optionSelect = document.createElement("select");
+
+        // PT: Adiciona uma classe CSS ao dropdown da opção.
+        // EN: Adds a CSS class to the option dropdown.
+        optionSelect.classList.add("option-select");
+
+        // PT: Percorre cada escolha para criar uma opção dentro do dropdown.
+        // EN: Loops through each choice to create an option inside the dropdown.
+        productOptions[optionName].forEach((option) => {
+            // PT: Cria uma opção individual dentro do dropdown.
+            // EN: Creates an individual option inside the dropdown.
+            const optionElement = document.createElement("option");
+
+            // PT: Define o texto visível da opção, incluindo preço extra quando existir.
+            // EN: Sets the visible option text, including extra price when it exists.
+            optionElement.textContent = typeof option === "string" ? option : `${option.label} (+$${option.priceModifier})`;
+
+            // PT: Guarda o valor da opção para ser usado mais tarde no carrinho.
+            // EN: Stores the option value to be used later in the cart.
+            optionElement.value = typeof option === "string" ? option : option.label;
+
+            // PT: Guarda o preço extra da opção para calcular o subtotal quando o produto for adicionado.
+            // EN: Stores the option extra price to calculate the subtotal when the product is added.
+            optionElement.dataset.priceModifier = typeof option === "string" ? "0" : option.priceModifier;
+
+            // PT: Adiciona a opção criada ao dropdown.
+            // EN: Adds the created option to the dropdown.
+            optionSelect.appendChild(optionElement);
         });
-    }
+
+        // PT: Adiciona o dropdown ao grupo visual da opção.
+        // EN: Adds the dropdown to the visual option group.
+        optionGroup.appendChild(optionSelect);
+
+        // PT: Adiciona o grupo completo ao container das opções.
+        // EN: Adds the complete group to the options container.
+        optionsContainer.appendChild(optionGroup);
+    });
+
+    // PT: Cria um grupo visual para escolher a quantidade do produto.
+    // EN: Creates a visual group to choose the product quantity.
+    const quantityGroup = document.createElement("label");
+
+    // PT: Adiciona uma classe CSS ao grupo da quantidade.
+    // EN: Adds a CSS class to the quantity group.
+    quantityGroup.classList.add("option-group");
+
+    // PT: Mostra o texto "Quantity" antes do campo numérico.
+    // EN: Shows the text "Quantity" before the number field.
+    quantityGroup.textContent = "Quantity ";
+
+    // PT: Cria um campo pequeno para escolher a quantidade da combinação selecionada.
+    // EN: Creates a small field to choose the quantity for the selected combination.
+    const quantityInput = document.createElement("input");
+
+    // PT: Define o campo como numérico.
+    // EN: Sets the field as numeric.
+    quantityInput.type = "number";
+
+    // PT: Define a quantidade mínima como um.
+    // EN: Sets the minimum quantity as one.
+    quantityInput.min = "1";
+
+    // PT: Define a quantidade inicial como um.
+    // EN: Sets the initial quantity as one.
+    quantityInput.value = "1";
+
+    // PT: Adiciona uma classe CSS ao campo de quantidade.
+    // EN: Adds a CSS class to the quantity field.
+    quantityInput.classList.add("option-quantity");
+
+    // PT: Adiciona o campo de quantidade ao grupo visual.
+    // EN: Adds the quantity field to the visual group.
+    quantityGroup.appendChild(quantityInput);
+
+    // PT: Adiciona o grupo de quantidade ao container das opções.
+    // EN: Adds the quantity group to the options container.
+    optionsContainer.appendChild(quantityGroup);
+
     // PT: Devolve o container para ele poder ser adicionado ao card do produto.
     // EN: Returns the container so it can be added to the product card.
     return optionsContainer;
@@ -450,3 +742,37 @@ getProducts();
 // PT: Executa a função que ativa os botões de filtro.
 // EN: Runs the function that activates the filter buttons.
 setupFilters();
+
+// PT: Quando o botão de limpar carrinho é clicado, repõe os valores do carrinho.
+// EN: When the clear cart button is clicked, resets the cart values.
+clearCartButton.addEventListener("click", () => {
+    // PT: Esvazia a lista de artigos guardados no carrinho.
+    // EN: Empties the stored list of cart items.
+    cartItems = [];
+
+    // PT: Atualiza todos os valores visíveis depois de limpar o carrinho.
+    // EN: Updates all visible values after clearing the cart.
+    updateCartDisplay();
+});
+
+// PT: Quando o cursor entra na lista com artigos, abre a janela completa.
+// EN: When the cursor enters the list with items, opens the full window.
+cartItemsList.addEventListener("mouseenter", () => {
+    // PT: Só abre automaticamente quando existe pelo menos um artigo no carrinho.
+    // EN: Only opens automatically when there is at least one item in the cart.
+    if (cartItems.length > 0) {
+        isCartExpanded = true;
+        updateCartDisplay();
+    }
+});
+
+// PT: Quando o cursor sai da lista com artigos, volta a minimizar a janela.
+// EN: When the cursor leaves the list with items, collapses the window again.
+cartItemsList.addEventListener("mouseleave", () => {
+    // PT: Só minimiza automaticamente quando existe pelo menos um artigo no carrinho.
+    // EN: Only collapses automatically when there is at least one item in the cart.
+    if (cartItems.length > 0) {
+        isCartExpanded = false;
+        updateCartDisplay();
+    }
+});

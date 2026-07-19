@@ -6,19 +6,19 @@
     box-sizing: border-box;
 }
 
-/* PT: Define a fonte principal, a cor de fundo e a cor base do texto da página. */
-/* EN: Sets the main font, background color, and base text color for the page. */
+/* PT: Define uma base visual mais forte, mantendo a página clara e moderna. */
+/* EN: Defines a stronger visual base while keeping the page light and modern. */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f8fafc;
-    color: #222;
+    background-color: #eef2f7;
+    color: #111827;
 }
 
-/* PT: Organiza o cabeçalho com marca à esquerda e navegação à direita. */
-/* EN: Organizes the header with the brand on the left and navigation on the right. */
+/* PT: Dá ao cabeçalho um fundo escuro moderno para criar mais contraste e presença visual. */
+/* EN: Gives the header a modern dark background to create stronger contrast and visual presence. */
 header {
-    background-color: #fff;
-    color: #111827;
+    background-color: #0f172a;
+    color: #ffffff;
     padding: 24px 32px;
     display: flex;
     justify-content: space-between;
@@ -26,7 +26,8 @@ header {
     position: sticky;
     top: 0;
     z-index: 10;
-    box-shadow: 0 1px 0 rgba(17, 24, 39, 0.08);
+    border-bottom: 1px solid #1e293b;
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.38), 0 4px 12px rgba(15, 23, 42, 0.22);
 }
 
 /* PT: Coloca os links do menu lado a lado com espaçamento entre eles. */
@@ -37,28 +38,254 @@ nav {
     gap: 24px;
 }
 
-/* PT: Remove o sublinhado dos links e deixa o texto do menu branco. */
-/* EN: Removes link underlines and keeps the menu text white. */
+/* PT: Transforma os links do menu em botões visíveis com sombra prateada no header escuro. */
+/* EN: Turns the menu links into visible buttons with a silver shadow on the dark header. */
 nav a {
-    color: #111827;
+    display: inline-block;
+    position: relative;
+    color: #0f172a;
+    background-color: #f8fafc;
     text-decoration: none;
-    font-weight: 600;
-}
-
-/* PT: Dá feedback visual quando o utilizador passa o rato nos links do menu. */
-/* EN: Gives visual feedback when the user hovers over the menu links. */
-nav a:hover {
-   color: #6b7280;
-}
-
-/* PT: Dá destaque visual ao contador do carrinho no header. */
-/* EN: Gives visual emphasis to the cart counter in the header. */
-#cart-counter {
-    background-color: #111827;
-    color: #fff;
+    font-weight: 800;
     padding: 9px 14px;
     border-radius: 999px;
+    box-shadow: 0 8px 18px rgba(203, 213, 225, 0.35);
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* PT: Muda os botões do menu para azul ao passar o cursor e reforça a sombra prateada. */
+/* EN: Changes the menu buttons to blue on hover and strengthens the silver shadow. */
+nav a:hover {
+   background-color: #2563eb;
+   color: #ffffff;
+   transform: translateY(-4px);
+   box-shadow: 0 12px 24px rgba(203, 213, 225, 0.45);
+}
+
+/* PT: Deixa o botão do carrinho igual aos botões Home e Products para manter o header consistente. */
+/* EN: Makes the cart button match the Home and Products buttons to keep the header consistent. */
+#cart-counter {
+    display: inline-block;
+    position: relative;
+    background-color: #f8fafc;
+    color: #0f172a;
+    padding: 9px 14px;
+    border-radius: 999px;
+    font-weight: 800;
+    box-shadow: 0 8px 18px rgba(203, 213, 225, 0.35);
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* PT: Muda o botão do carrinho para azul no hover e eleva ligeiramente o botão. */
+/* EN: Changes the cart button to blue on hover and slightly lifts the button. */
+#cart-counter:hover {
+    background-color: #2563eb;
+    color: #ffffff;
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(203, 213, 225, 0.45);
+}
+
+/* PT: Organiza os elementos principais do carrinho numa linha compacta dentro do header. */
+/* EN: Organizes the main cart elements in a compact row inside the header. */
+.cart-summary {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+}
+
+/* PT: Dá ao subtotal e ao IVA contraste claro para ficarem legíveis sobre o header escuro. */
+/* EN: Gives the subtotal and VAT clear contrast so they stay readable over the dark header. */
+#cart-subtotal,
+#cart-vat {
+    padding: 8px 10px;
+    background-color: #1e293b;
+    color: #e2e8f0;
+    border: 1px solid #334155;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+/* PT: Dá ao botão de limpar carrinho um fundo claro para ficar bem visível no header escuro. */
+/* EN: Gives the clear cart button a light background so it is clearly visible on the dark header. */
+#clear-cart-button {
+    background-color: #e2e8f0;
+    color: #0f172a;
+    border: 1px solid #ffffff;
+    padding: 9px 14px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-weight: 800;
+    letter-spacing: 0;
+    box-shadow: 0 8px 18px rgba(203, 213, 225, 0.45);
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* PT: Aumenta a presença do botão no hover com azul forte e sombra colorida. */
+/* EN: Increases the button presence on hover with strong blue and colored shadow. */
+#clear-cart-button:hover {
+    background-color: #ef4444;
+    color: #ffffff;
+    transform: translateY(-4px);
+    box-shadow: 0 12px 26px rgba(248, 113, 113, 0.45);
+}
+
+/* PT: Transforma a lista do carrinho numa pequena caixa suspensa abaixo do header. */
+/* EN: Turns the cart list into a small dropdown box below the header. */
+#cart-items {
+    position: absolute;
+    top: 44px;
+    right: 0;
+    width: 360px;
+    max-height: 260px;
+    overflow-y: auto;
+    padding: 12px;
+    /* PT: Usa um fundo quente suave para a lista do carrinho não parecer demasiado fria. */
+    /* EN: Uses a soft warm background so the cart list does not feel too cold. */
+    background-color: #fff7ed;
+    border: 1px solid #fed7aa;
+    border-radius: 12px;
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.16);
+    font-size: 12px;
+    color: #111827;
+    z-index: 20;
+}
+
+/* PT: Esconde a caixa do carrinho quando ainda não existem artigos adicionados. */
+/* EN: Hides the cart box when there are no added items yet. */
+#cart-items:empty {
+    display: none;
+}
+
+/* PT: Minimiza a lista sempre que existem artigos para não ocupar demasiado ecrã. */
+/* EN: Collapses the list whenever there are items so it does not take too much screen space. */
+#cart-items.cart-collapsed {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 42px;
+    max-height: 42px;
+    padding: 0;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+/* PT: Esconde os artigos quando a janela do carrinho está minimizada. */
+/* EN: Hides the items when the cart window is collapsed. */
+#cart-items.cart-collapsed .cart-item {
+    display: none;
+}
+
+/* PT: Mostra os artigos quando o cursor passa por cima da caixa minimizada. */
+/* EN: Shows the items when the cursor hovers over the collapsed box. */
+#cart-items.cart-collapsed:hover .cart-item {
+    display: flex;
+}
+
+/* PT: Abre visualmente a caixa minimizada enquanto o cursor está por cima dela. */
+/* EN: Visually opens the collapsed box while the cursor is hovering over it. */
+#cart-items.cart-collapsed:hover {
+    display: block;
+    height: auto;
+    max-height: 320px;
+    padding: 12px;
+    overflow-y: auto;
+}
+
+/* PT: Abre a lista completa quando o cursor passa por cima da caixa do carrinho. */
+/* EN: Opens the full list when the cursor hovers over the cart box. */
+#cart-items.cart-expanded {
+    display: block;
+    max-height: 320px;
+    height: auto;
+    padding: 12px;
+    overflow-y: auto;
+}
+
+/* PT: Garante que os artigos ficam visíveis quando o carrinho está no estado aberto. */
+/* EN: Ensures the items stay visible when the cart is in the open state. */
+#cart-items.cart-expanded .cart-item {
+    display: flex;
+}
+
+/* PT: Mostra apenas uma barra pequena quando a janela do carrinho está minimizada. */
+/* EN: Shows only a small bar when the cart window is collapsed. */
+#cart-items.cart-collapsed::after {
+    content: "Cart items - hover to open";
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background-color: #f9fafb;
+    color: #374151;
     font-weight: bold;
+    text-align: center;
+    border-top: 1px solid #e5e7eb;
+}
+
+/* PT: Esconde o texto da barra minimizada quando a lista abre no hover. */
+/* EN: Hides the collapsed bar text when the list opens on hover. */
+#cart-items.cart-collapsed:hover::after {
+    display: none;
+}
+
+/* PT: Organiza cada artigo do carrinho com texto à esquerda e botão à direita. */
+/* EN: Organizes each cart item with text on the left and button on the right. */
+.cart-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 8px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    /* PT: Mantém cada artigo claro, mas com um tom quente que combina com o fundo da lista. */
+    /* EN: Keeps each item light, but with a warm tone that matches the list background. */
+    background-color: #fffbf5;
+    color: #111827;
+}
+
+/* PT: Garante que o texto do artigo tem espaço e fica legível dentro da lista do carrinho. */
+/* EN: Ensures the item text has space and stays readable inside the cart list. */
+.cart-item span {
+    flex: 1;
+    color: #111827;
+    line-height: 1.3;
+}
+
+/* PT: Estiliza o botão que remove apenas um artigo selecionado. */
+/* EN: Styles the button that removes only one selected item. */
+.cart-item button {
+    padding: 8px 10px;
+    border: none;
+    border-radius: 999px;
+    background-color: #111827;
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* PT: Mantém o campo de quantidade e o botão de remover alinhados na mesma linha. */
+/* EN: Keeps the quantity field and remove button aligned on the same line. */
+.cart-remove-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* PT: Deixa o campo de quantidade pequeno para não ocupar demasiado espaço no carrinho. */
+/* EN: Keeps the quantity field small so it does not take too much cart space. */
+.remove-quantity {
+    width: 52px;
+    padding: 7px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+}
+
+/* PT: Dá feedback visual ao botão de remover quando o utilizador passa o rato. */
+/* EN: Gives visual feedback to the remove button when the user hovers. */
+.cart-item button:hover {
+    background-color: #374151;
 }
 
 /* PT: Adiciona espaço à volta do conteúdo principal da página. */
@@ -251,6 +478,16 @@ footer p {
     font-size: 18px;
     font-weight: bold;
     color: #047857;
+}
+
+/* PT: Organiza as opções do produto em linhas compactas dentro do card. */
+/* EN: Organizes the product options in compact rows inside the card. */
+.product-options {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin: 12px 0 16px;
 }
 
 /* PT: Em ecrãs médios, reduz a grelha para duas colunas. */

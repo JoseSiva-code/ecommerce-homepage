@@ -18,7 +18,25 @@
         <nav>
             <a href="#">Home</a>
             <a href="#products">Products</a>
-            <span id="cart-counter" aria-live="polite">Cart (0)</span>
+
+            <!-- PT: Agrupa todos os elementos do carrinho para permitir um layout compacto no header. -->
+            <!-- EN: Groups all cart elements to allow a compact layout in the header. -->
+            <div class="cart-summary">
+                <span id="cart-counter" aria-live="polite">Cart (0)</span>
+                <!-- PT: Mostra o subtotal atual dos artigos adicionados ao carrinho. -->
+                <!-- EN: Shows the current subtotal of items added to the cart. -->
+                <span id="cart-subtotal" aria-live="polite">Subtotal: $0.00</span>
+                <!-- PT: Mostra o valor de IVA incluído no subtotal do carrinho. -->
+                <!-- EN: Shows the VAT amount included in the cart subtotal. -->
+                <span id="cart-vat" aria-live="polite">VAT incl.: $0.00</span>
+                <!-- PT: Permite limpar todos os produtos adicionados ao carrinho. -->
+                <!-- EN: Allows clearing all products added to the cart. -->
+                <button id="clear-cart-button">Clear cart</button>
+
+                <!-- PT: Mostra os artigos adicionados para o cliente poder remover escolhas específicas. -->
+                <!-- EN: Shows the added items so the customer can remove specific choices. -->
+                <div id="cart-items" aria-live="polite"></div>
+            </div>
         </nav>
     </header>
 
