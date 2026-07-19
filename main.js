@@ -175,6 +175,30 @@ function showProducts(products) {
             // EN: Creates the visual elements for the product options.
             const productOptionsElement = createProductOptions(productOptions);
 
+            // PT: Atualiza o preço visível no card quando o cliente escolhe opções com preço extra.
+            // EN: Updates the visible card price when the customer chooses options with an extra price.
+            function updateProductPrice() {
+                // PT: Soma todos os preços extra das opções selecionadas neste produto.
+                // EN: Adds all extra prices from the selected options in this product.
+                const selectedOptionsExtraPrice = Array.from(productOptionsElement.querySelectorAll(".option-select")).reduce((total, select) => {
+                    return total + Number(select.selectedOptions[0].dataset.priceModifier);
+                }, 0);
+
+                // PT: Calcula o preço atualizado do produto com as opções escolhidas.
+                // EN: Calculates the updated product price with the selected options.
+                const updatedProductPrice = product.price + selectedOptionsExtraPrice;
+
+                // PT: Mostra o preço atualizado no card com duas casas decimais.
+                // EN: Shows the updated price in the card with two decimal places.
+                productPrice.textContent = `$${updatedProductPrice.toFixed(2)}`;
+            }
+
+            // PT: Atualiza o preço sempre que o cliente muda uma opção do produto.
+            // EN: Updates the price whenever the customer changes a product option.
+            productOptionsElement.querySelectorAll(".option-select").forEach((select) => {
+                select.addEventListener("change", updateProductPrice);
+            });
+
             // PT: Cria um botão para permitir adicionar o produto ao carrinho.
             // EN: Creates a button to allow adding the product to the cart.
             const addToCartButton = document.createElement("button");

@@ -688,6 +688,47 @@ footer p {
     #products {
         grid-template-columns: repeat(2, 1fr);
     }
+
+    /* PT: Em tablets, permite que o header quebre linha sem comprimir os botões. */
+    /* EN: On tablets, allows the header to wrap without squeezing the buttons. */
+    header {
+        flex-wrap: wrap;
+        gap: 18px;
+    }
+
+    /* PT: Em tablets, deixa a navegação ocupar a largura disponível quando necessário. */
+    /* EN: On tablets, lets the navigation use the available width when needed. */
+    nav {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 12px;
+        flex: 1;
+    }
+
+    /* PT: Em tablets, organiza o carrinho em linhas equilibradas para evitar overflow. */
+    /* EN: On tablets, organizes the cart across balanced rows to avoid overflow. */
+    .cart-summary {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    /* PT: Em tablets, limita a largura da lista do carrinho para não sair do ecrã. */
+    /* EN: On tablets, limits the cart list width so it does not leave the screen. */
+    #cart-items {
+        width: min(360px, 90vw);
+    }
+
+    /* PT: Em tablets, reduz ligeiramente o tamanho da hero para ficar proporcional. */
+    /* EN: On tablets, slightly reduces the hero size to stay proportional. */
+    .hero {
+        padding: 60px 28px;
+    }
+
+    /* PT: Em tablets, reduz um pouco o título da hero para evitar que fique apertado. */
+    /* EN: On tablets, slightly reduces the hero title to avoid crowding. */
+    .hero h2 {
+        font-size: 36px;
+    }
 }
 
 /* PT: Em ecrãs pequenos, mostra os produtos numa só coluna. */
@@ -702,7 +743,57 @@ footer p {
     header {
         flex-direction: column;
         gap: 16px;
+        padding: 20px;
         text-align: center;
+    }
+
+    /* PT: Permite que os botões do menu quebrem linha no telemóvel sem sair do ecrã. */
+    /* EN: Allows menu buttons to wrap on mobile without leaving the screen. */
+    nav {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        width: 100%;
+    }
+
+    /* PT: Reduz ligeiramente os botões do header para caberem melhor no telemóvel. */
+    /* EN: Slightly reduces header buttons so they fit better on mobile. */
+    nav a,
+    #cart-counter,
+    #clear-cart-button {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+
+    /* PT: Organiza o resumo do carrinho em várias linhas no telemóvel. */
+    /* EN: Organizes the cart summary across multiple lines on mobile. */
+    .cart-summary {
+        justify-content: center;
+        flex-wrap: wrap;
+        width: 100%;
+    }
+
+    /* PT: Deixa subtotal e IVA mais compactos para evitar overflow no header. */
+    /* EN: Makes subtotal and VAT more compact to avoid header overflow. */
+    #cart-subtotal,
+    #cart-vat {
+        font-size: 12px;
+        padding: 7px 9px;
+    }
+
+    /* PT: No telemóvel, coloca a lista do carrinho abaixo dos botões e com largura segura. */
+    /* EN: On mobile, places the cart list below the buttons with safe width. */
+    #cart-items {
+        position: static;
+        width: 100%;
+        max-width: 100%;
+        margin-top: 8px;
+    }
+
+    /* PT: Garante que a lista minimizada do carrinho ocupa toda a largura disponível no telemóvel. */
+    /* EN: Ensures the collapsed cart list uses the full available width on mobile. */
+    #cart-items.cart-collapsed {
+        width: 100%;
     }
 
     /* PT: Reduz o espaçamento principal para aproveitar melhor o espaço no telemóvel. */
@@ -714,19 +805,48 @@ footer p {
     /* PT: Reduz o tamanho da hero para ficar mais equilibrada em ecrãs pequenos. */
     /* EN: Reduces the hero size to look more balanced on small screens. */
     .hero {
-        padding: 32px 20px;
+        padding: 48px 20px;
+        background-position: center;
+        -webkit-mask-image: none;
+        mask-image: none;
     }
 
     /* PT: Reduz o título da hero para evitar que fique demasiado grande no telemóvel. */
     /* EN: Reduces the hero title to prevent it from being too large on mobile. */
     .hero h2 {
-        font-size: 28px;
+        font-size: 30px;
     }
 
     /* PT: Reduz ligeiramente o texto da hero para melhorar a leitura no telemóvel. */
     /* EN: Slightly reduces the hero text to improve reading on mobile. */
     .hero p {
         font-size: 16px;
+    }
+
+    /* PT: Evita que os cards fiquem demasiado largos ou encostados no telemóvel. */
+    /* EN: Prevents cards from becoming too wide or too close to the screen edge on mobile. */
+    .product-card {
+        padding: 18px;
+    }
+
+    /* PT: Reduz a altura da imagem do produto para equilibrar o card no telemóvel. */
+    /* EN: Reduces product image height to balance the card on mobile. */
+    .product-card img {
+        height: 210px;
+    }
+
+    /* PT: Faz as opções ocuparem uma coluna limpa em ecrãs pequenos. */
+    /* EN: Makes product options use a clean column on small screens. */
+    .product-options {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    /* PT: Faz cada grupo de opções ocupar a largura total do card no telemóvel. */
+    /* EN: Makes each option group use the full card width on mobile. */
+    .option-group {
+        flex: 1 1 auto;
+        width: 100%;
     }
 
     /* PT: Reduz o espaçamento do footer em ecrãs pequenos. */
