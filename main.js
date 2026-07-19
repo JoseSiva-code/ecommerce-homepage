@@ -46,10 +46,6 @@ let cartSubtotalValue = 0;
 // EN: Stores each added item so we can remove only the chosen item.
 let cartItems = [];
 
-// PT: Guarda se a lista do carrinho está aberta para mostrar todos os artigos.
-// EN: Stores whether the cart list is open to show all items.
-let isCartExpanded = false;
-
 // PT: Guarda a taxa de IVA incluída nos preços apresentados.
 // EN: Stores the VAT rate included in the displayed prices.
 const vatRate = 0.19;
@@ -82,10 +78,6 @@ async function getProducts() {
     // EN: Stores the complete product list to be used by the filters.
     allProducts = products;
 
-    // PT: Mostra os produtos na consola para confirmar que a API respondeu corretamente.
-    // EN: Shows the products in the console to confirm that the API responded correctly.
-    console.log(products);
-    
     // PT: Envia a lista de produtos para a função que vai criar os cards no HTML.
     // EN: Sends the product list to the function that will create the cards in the HTML.
     showProducts(products);
@@ -208,10 +200,6 @@ function showProducts(products) {
                 // EN: Waits for the API response and stores the updated cart.
                 const updatedCart = await addProductToCart(product);
 
-                // PT: Mostra no main.js o resultado recebido da função externa.
-                // EN: Shows in main.js the result received from the external function.
-                console.log(updatedCart);
-                
                 // PT: Mostra no botão que o produto foi adicionado ao carrinho.
                 // EN: Shows on the button that the product was added to the cart.
                 addToCartButton.textContent = "Added";
@@ -321,21 +309,19 @@ function updateCartDisplay() {
     // EN: Clears the visible list before drawing the current items again.
     cartItemsList.textContent = "";
 
-    // PT: Remove classes antigas antes de decidir se a lista fica aberta ou minimizada.
-    // EN: Removes old classes before deciding if the list stays open or collapsed.
-    cartItemsList.classList.remove("cart-collapsed", "cart-expanded");
+    // PT: Remove a classe antiga antes de decidir se a lista fica minimizada.
+    // EN: Removes the old class before deciding if the list stays collapsed.
+    cartItemsList.classList.remove("cart-collapsed");
 
     // PT: Se o carrinho estiver vazio, a lista não precisa de estado aberto ou minimizado.
     // EN: If the cart is empty, the list does not need an open or collapsed state.
     if (cartItems.length === 0) {
-        isCartExpanded = false;
+        return;
     }
 
-    // PT: Quando existe pelo menos um artigo, aplica a classe certa conforme o estado atual.
-    // EN: When there is at least one item, applies the correct class based on the current state.
-    if (cartItems.length > 0) {
-        cartItemsList.classList.add(isCartExpanded ? "cart-expanded" : "cart-collapsed");
-    }
+    // PT: Quando existe pelo menos um artigo, mantém a lista minimizada até haver hover/foco.
+    // EN: When there is at least one item, keeps the list collapsed until hover/focus.
+    cartItemsList.classList.add("cart-collapsed");
 
     // PT: Percorre cada artigo do carrinho para criar uma linha com botão de remover.
     // EN: Loops through each cart item to create a row with a remove button.
@@ -753,26 +739,4 @@ clearCartButton.addEventListener("click", () => {
     // PT: Atualiza todos os valores visíveis depois de limpar o carrinho.
     // EN: Updates all visible values after clearing the cart.
     updateCartDisplay();
-});
-
-// PT: Quando o cursor entra na lista com artigos, abre a janela completa.
-// EN: When the cursor enters the list with items, opens the full window.
-cartItemsList.addEventListener("mouseenter", () => {
-    // PT: Só abre automaticamente quando existe pelo menos um artigo no carrinho.
-    // EN: Only opens automatically when there is at least one item in the cart.
-    if (cartItems.length > 0) {
-        isCartExpanded = true;
-        updateCartDisplay();
-    }
-});
-
-// PT: Quando o cursor sai da lista com artigos, volta a minimizar a janela.
-// EN: When the cursor leaves the list with items, collapses the window again.
-cartItemsList.addEventListener("mouseleave", () => {
-    // PT: Só minimiza automaticamente quando existe pelo menos um artigo no carrinho.
-    // EN: Only collapses automatically when there is at least one item in the cart.
-    if (cartItems.length > 0) {
-        isCartExpanded = false;
-        updateCartDisplay();
-    }
 });

@@ -25,9 +25,35 @@ header {
     align-items: center;
     position: sticky;
     top: 0;
-    z-index: 10;
+    z-index: 30;
     border-bottom: 1px solid #1e293b;
     box-shadow: 0 18px 40px rgba(15, 23, 42, 0.38), 0 4px 12px rgba(15, 23, 42, 0.22);
+    overflow: visible;
+}
+
+/* PT: Mantém o nome da loja limpo e bem legível dentro do header escuro. */
+/* EN: Keeps the store name clean and clearly readable inside the dark header. */
+header h1 {
+    font-size: 34px;
+    font-weight: 900;
+    line-height: 1.1;
+    color: #ffffff;
+    text-shadow: 0 8px 22px rgba(203, 213, 225, 0.32);
+}
+
+/* PT: Adiciona uma bola branca depois do nome da loja para funcionar como assinatura visual. */
+/* EN: Adds a white dot after the store name to work as a visual signature. */
+header h1::after {
+    content: "";
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-left: 8px;
+    background: radial-gradient(circle, #ffffff 0%, #dbeafe 44%, #60a5fa 100%);
+    border: 1px solid rgba(219, 234, 254, 0.98);
+    border-radius: 50%;
+    transform: translateY(8px);
+    box-shadow: 0 0 34px rgba(255, 255, 255, 1), 0 0 96px rgba(248, 250, 252, 1), 0 0 190px rgba(191, 219, 254, 0.98), 0 0 300px rgba(147, 197, 253, 0.72), 0 0 430px rgba(96, 165, 250, 0.48);
 }
 
 /* PT: Coloca os links do menu lado a lado com espaçamento entre eles. */
@@ -183,6 +209,12 @@ nav a:hover {
     display: flex;
 }
 
+/* PT: Garante que os artigos também aparecem quando a lista recebe foco pelo teclado. */
+/* EN: Ensures the items also appear when the list receives keyboard focus. */
+#cart-items.cart-collapsed:focus-within .cart-item {
+    display: flex;
+}
+
 /* PT: Abre visualmente a caixa minimizada enquanto o cursor está por cima dela. */
 /* EN: Visually opens the collapsed box while the cursor is hovering over it. */
 #cart-items.cart-collapsed:hover {
@@ -193,20 +225,14 @@ nav a:hover {
     overflow-y: auto;
 }
 
-/* PT: Abre a lista completa quando o cursor passa por cima da caixa do carrinho. */
-/* EN: Opens the full list when the cursor hovers over the cart box. */
-#cart-items.cart-expanded {
+/* PT: Mantém a caixa aberta quando o cliente interage com inputs ou botões dentro dela. */
+/* EN: Keeps the box open when the customer interacts with inputs or buttons inside it. */
+#cart-items.cart-collapsed:focus-within {
     display: block;
-    max-height: 320px;
     height: auto;
+    max-height: 320px;
     padding: 12px;
     overflow-y: auto;
-}
-
-/* PT: Garante que os artigos ficam visíveis quando o carrinho está no estado aberto. */
-/* EN: Ensures the items stay visible when the cart is in the open state. */
-#cart-items.cart-expanded .cart-item {
-    display: flex;
 }
 
 /* PT: Mostra apenas uma barra pequena quando a janela do carrinho está minimizada. */
@@ -217,15 +243,24 @@ nav a:hover {
     width: 100%;
     padding: 12px;
     background-color: #f9fafb;
-    color: #374151;
-    font-weight: bold;
+    color: #1e293b;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0;
     text-align: center;
     border-top: 1px solid #e5e7eb;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.85);
 }
 
 /* PT: Esconde o texto da barra minimizada quando a lista abre no hover. */
 /* EN: Hides the collapsed bar text when the list opens on hover. */
 #cart-items.cart-collapsed:hover::after {
+    display: none;
+}
+
+/* PT: Esconde a barra minimizada quando o cliente está a interagir com os artigos do carrinho. */
+/* EN: Hides the collapsed bar when the customer is interacting with the cart items. */
+#cart-items.cart-collapsed:focus-within::after {
     display: none;
 }
 
@@ -245,12 +280,14 @@ nav a:hover {
     color: #111827;
 }
 
-/* PT: Garante que o texto do artigo tem espaço e fica legível dentro da lista do carrinho. */
-/* EN: Ensures the item text has space and stays readable inside the cart list. */
+/* PT: Melhora a tipografia dos artigos no mini-carrinho para ficar mais elegante e legível. */
+/* EN: Improves the mini-cart item typography to make it more elegant and readable. */
 .cart-item span {
     flex: 1;
-    color: #111827;
-    line-height: 1.3;
+    color: #1e293b;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.35;
 }
 
 /* PT: Estiliza o botão que remove apenas um artigo selecionado. */
@@ -311,47 +348,79 @@ footer p {
     margin-bottom: 8px;
 }
 
-/* PT: Cria uma secção hero destacada para apresentar a loja ao utilizador. */
-/* EN: Creates a highlighted hero section to introduce the store to the user. */
+/* PT: Integra a imagem como fundo suave acinzentado, com bordas desvanecidas para combinar com os tons do site. */
+/* EN: Integrates the image as a soft grey-toned background, with faded edges to match the site's palette. */
 .hero {
-    background-color: #f3f4f6;
-    padding: 48px 32px;
-    margin-bottom: 32px;
-    border-radius: 16px;
+    /* PT: Aplica uma camada azul acinzentada para aproximar a imagem das cores frias do site. */
+    /* EN: Applies a grey-blue layer to bring the image closer to the site's cool colors. */
+    background-image: linear-gradient(rgba(148, 163, 184, 0.62), rgba(226, 232, 240, 0.88)), url("store2.webp");
+    background-size: cover;
+    background-position: center;
+    background-blend-mode: color;
+    padding: 72px 32px;
+    margin-bottom: 36px;
+    border-radius: 0;
     text-align: center;
+    border: none;
+    box-shadow: none;
+    -webkit-mask-image: radial-gradient(circle at center, black 54%, transparent 100%);
+    mask-image: radial-gradient(circle at center, black 54%, transparent 100%);
+    /* PT: Permite posicionar uma camada suave por trás do conteúdo da hero. */
+    /* EN: Allows positioning a soft layer behind the hero content. */
+    position: relative;
+    overflow: hidden;
 }
 
-/* PT: Aumenta o destaque do título principal da hero. */
-/* EN: Increases the emphasis of the main hero title. */
+/* PT: Torna o título da hero mais forte, moderno e com melhor hierarquia visual. */
+/* EN: Makes the hero title stronger, more modern, and with better visual hierarchy. */
 .hero h2 {
-    font-size: 36px;
+    position: relative;
+    z-index: 1;
+    font-size: 42px;
     margin-bottom: 12px;
+    color: #0f172a;
+    font-weight: 900;
+    line-height: 1.1;
+    text-shadow: 0 2px 12px rgba(248, 250, 252, 0.86), 0 1px 0 rgba(255, 255, 255, 0.70);
 }
 
-/* PT: Deixa o texto da hero mais suave e confortável de ler. */
-/* EN: Makes the hero text softer and more comfortable to read. */
+/* PT: Deixa o texto da hero mais elegante e confortável de ler. */
+/* EN: Makes the hero text more elegant and comfortable to read. */
 .hero p {
+    position: relative;
+    z-index: 1;
+    max-width: 620px;
+    margin: 0 auto;
     font-size: 18px;
-    color: #555;
+    color: #0f172a;
+    line-height: 1.6;
+    font-weight: 800;
+    text-shadow: 0 2px 14px rgba(255, 255, 255, 0.96), 0 0 22px rgba(248, 250, 252, 0.84);
 }
 
-/* PT: Transforma o link da hero num botão principal de chamada para ação. */
-/* EN: Turns the hero link into a main call-to-action button. */
+/* PT: Transforma o botão da hero num CTA mais forte, moderno e coerente com o header. */
+/* EN: Turns the hero button into a stronger, modern CTA consistent with the header. */
 .hero a {
     display: inline-block;
-    margin-top: 20px;
-    padding: 12px 22px;
-    color: #fff;
-    background-color: #111827;
+    position: relative;
+    z-index: 1;
+    margin-top: 24px;
+    padding: 13px 24px;
+    color: #ffffff;
+    background-color: #0f172a;
     text-decoration: none;
     border-radius: 999px;
-    font-weight: bold;
+    font-weight: 900;
+    box-shadow: 0 14px 28px rgba(15, 23, 42, 0.34), 0 0 0 1px rgba(248, 250, 252, 0.26);
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* PT: Altera a cor do botão da hero quando o utilizador passa o rato por cima. */
-/* EN: Changes the hero button color when the user hovers over it. */
+/* PT: Dá ao CTA da hero uma resposta mais forte quando o cliente passa o cursor. */
+/* EN: Gives the hero CTA a stronger response when the customer hovers. */
 .hero a:hover {
-    background-color: #374151;
+    background-color: #2563eb;
+    transform: translateY(-3px);
+    box-shadow: 0 16px 30px rgba(37, 99, 235, 0.28);
 }
 
 /* PT: Organiza os filtros numa linha flexível e separa-os dos produtos. */
@@ -419,65 +488,91 @@ footer p {
     border: 1px solid #f0b4b4;
 }
 
-/* PT: Cria um card mais limpo, consistente e com transição suave. */
-/* EN: Creates a cleaner, more consistent card with a smooth transition. */
+/* PT: Dá ao card um aspeto mais premium com fundo limpo, borda suave e sombra mais presente. */
+/* EN: Gives the card a more premium look with a clean background, soft border, and stronger shadow. */
 .product-card {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 16px;
+    background-color: #ffffff;
+    padding: 22px;
+    border: 1px solid #dbe3ef;
+    border-radius: 18px;
     text-align: center;
-    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 10px 26px rgba(15, 23, 42, 0.10);
+    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
     display: flex;
     flex-direction: column;
+    gap: 8px;
 }
 
-/* PT: Eleva ligeiramente o card quando o utilizador passa o rato por cima. */
-/* EN: Slightly lifts the card when the user hovers over it. */
+/* PT: Eleva o card e reforça a sombra quando o cliente passa o cursor por cima. */
+/* EN: Lifts the card and strengthens the shadow when the customer hovers over it. */
 .product-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12);
+    transform: translateY(-6px);
+    border-color: #93c5fd;
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.16);
 }
 
-/* PT: Ajusta as imagens dos produtos para terem o mesmo tamanho sem distorcer. */
-/* EN: Adjusts product images to have the same size without distortion. */
+/* PT: Cria uma área de imagem mais consistente e elegante dentro do card. */
+/* EN: Creates a more consistent and elegant image area inside the card. */
 .product-card img {
     width: 100%;
-    height: 220px;
+    height: 230px;
     object-fit: contain;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
+    padding: 12px;
+    background-color: #f8fafc;
+    border-radius: 14px;
 }
 
-/* PT: Mantém o nome do produto legível e com altura mais consistente no card. */
-/* EN: Keeps the product name readable and with more consistent height in the card. */
+/* PT: Dá uma transição suave à imagem para acompanhar o hover do card. */
+/* EN: Gives the image a smooth transition to follow the card hover. */
+.product-card img {
+    transition: transform 0.22s ease;
+}
+
+/* PT: Aproxima ligeiramente a imagem quando o card está em hover para dar sensação de interação. */
+/* EN: Slightly brings the image closer when the card is hovered to give an interactive feeling. */
+.product-card:hover img {
+    transform: scale(1.03);
+}
+
+/* PT: Deixa o título do produto mais elegante, legível e consistente entre cards. */
+/* EN: Makes the product title more elegant, readable, and consistent across cards. */
 .product-card h2 {
     font-size: 16px;
-    margin-top: 16px;
-    min-height: 48px;
-    line-height: 1.4;
+    margin-top: 8px;
+    min-height: 52px;
+    line-height: 1.35;
+    color: #0f172a;
+    font-weight: 800;
 }
-
-/* PT: Mostra a categoria como uma pequena etiqueta discreta dentro do card. */
-/* EN: Shows the category as a small subtle label inside the card. */
+/* PT: Transforma a categoria numa badge acinzentada, limpa e alinhada com os tons do site. */
+/* EN: Turns the category into a grey-toned badge, clean and aligned with the site's colors. */
 .product-category {
     display: inline-block;
-    margin-top: 10px;
-    padding: 6px 10px;
-    background-color: #eef2ff;
-    color: #3730a3;
-    border-radius: 20px;
+    margin-top: 0px;
+    padding: 7px 12px;
+    background-color: #e2e8f0;
+    color: #334155;
+    border: 1px solid #cbd5e1;
+    border-radius: 999px;
     font-size: 12px;
-    font-weight: bold;
+    font-weight: 800;
     text-transform: capitalize;
 }
 
-/* PT: Destaca o preço do produto com mais peso visual e espaçamento. */
-/* EN: Highlights the product price with stronger visual weight and spacing. */
+/* PT: Destaca o preço com cor forte e espaçamento próprio para parecer mais comercial. */
+/* EN: Highlights the price with strong color and dedicated spacing to feel more commercial. */
 .product-price {
-    margin-top: 12px;
-    font-size: 18px;
-    font-weight: bold;
+    margin-top: 4px;
+    font-size: 20px;
+    font-weight: 900;
     color: #047857;
+}
+
+/* PT: Adiciona uma pequena sombra ao preço para dar mais presença sem perder legibilidade. */
+/* EN: Adds a small shadow to the price to give more presence without losing readability. */
+.product-price {
+    text-shadow: 0 1px 0 rgba(4, 120, 87, 0.12);
 }
 
 /* PT: Organiza as opções do produto em linhas compactas dentro do card. */
@@ -487,7 +582,104 @@ footer p {
     flex-wrap: wrap;
     justify-content: center;
     gap: 8px;
-    margin: 12px 0 16px;
+    margin: 8px 0 12px;
+    align-items: flex-start;
+}
+
+/* PT: Transforma cada grupo de opção num pequeno bloco organizado dentro do card. */
+/* EN: Turns each option group into a small organized block inside the card. */
+.option-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    color: #334155;
+    font-size: 12px;
+    font-weight: 800;
+    /* PT: Alinha o texto das labels à esquerda para ficar mais organizado. */
+    /* EN: Aligns the label text to the left to look more organized. */
+    text-align: left;
+    flex: 1 1 110px;
+}
+
+/* PT: Dá aos dropdowns e ao campo de quantidade uma aparência moderna e consistente. */
+/* EN: Gives dropdowns and the quantity field a modern and consistent appearance. */
+.option-select,
+.option-quantity {
+    min-width: 86px;
+    padding: 8px 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    background-color: #ffffff;
+    color: #0f172a;
+    font-weight: 700;
+    outline: none;
+    width: 100%;
+}
+
+/* PT: Dá aos dropdowns um aspeto mais premium com fundo suave, texto forte e cursor claro. */
+/* EN: Gives dropdowns a more premium look with a soft background, strong text, and clear cursor. */
+.option-select {
+    background-color: #eaf0f7;
+    color: #0f172a;
+    border-color: #94a3b8;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65), 0 8px 16px rgba(15, 23, 42, 0.10);
+}
+
+/* PT: Tenta melhorar a aparência das opções internas do dropdown onde o browser permitir. */
+/* EN: Tries to improve the appearance of the dropdown options where the browser allows it. */
+.option-select option {
+    background-color: #eaf0f7;
+    color: #0f172a;
+    font-weight: 700;
+}
+
+/* PT: Destaca o campo ativo quando o cliente clica numa opção do produto. */
+/* EN: Highlights the active field when the customer clicks a product option. */
+.option-select:focus,
+.option-quantity:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.16);
+}
+
+/* PT: Mantém a quantidade responsiva, mas evita que fique demasiado pequena. */
+/* EN: Keeps the quantity responsive, but prevents it from becoming too small. */
+.option-quantity {
+    min-width: 72px;
+}
+
+/* PT: Dá uma sombra suave às opções para parecerem controlos reais de ecommerce. */
+/* EN: Gives the options a soft shadow so they feel like real ecommerce controls. */
+.option-select,
+.option-quantity {
+    box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
+/* PT: Impede que padding e borda aumentem a largura real do campo. */
+/* EN: Prevents padding and border from increasing the real field width. */
+    box-sizing: border-box;
+}
+
+/* PT: Dá feedback visual quando o cliente passa o cursor por cima das opções. */
+/* EN: Gives visual feedback when the customer hovers over the options. */
+.option-select:hover,
+.option-quantity:hover {
+    border-color: #94a3b8;
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
+}
+
+/* PT: Remove as setas exageradas do campo numérico em alguns browsers para ficar mais limpo. */
+/* EN: Removes oversized number input arrows in some browsers to keep it cleaner. */
+.option-quantity::-webkit-outer-spin-button,
+.option-quantity::-webkit-inner-spin-button {
+    margin: 0;
+}
+
+/* PT: Garante que as opções ocupam largura equilibrada quando o card fica mais estreito. */
+/* EN: Ensures the options take balanced width when the card becomes narrower. */
+.option-group {
+    flex: 1 1 110px;
 }
 
 /* PT: Em ecrãs médios, reduz a grelha para duas colunas. */
@@ -544,29 +736,37 @@ footer p {
     }
 }
 
-/* PT: Estiliza o botão do card para parecer mais moderno e ocupar a largura do card. */
-/* EN: Styles the card button to look more modern and fill the card width. */
+/* PT: Estiliza o botão de adicionar ao carrinho com mais presença e aspeto moderno. */
+/* EN: Styles the add to cart button with stronger presence and a modern look. */
 .product-card button {
     width: 100%;
     margin-top: auto;
-    padding: 12px 16px;
-    background-color: #111827;
-    color: #fff;
+    padding: 13px 16px;
+    background-color: #0f172a;
+    color: #ffffff;
     border: none;
     border-radius: 999px;
     cursor: pointer;
-    font-weight: bold;
+    font-weight: 800;
+    letter-spacing: 0;
+    box-shadow: 0 10px 22px rgba(15, 23, 42, 0.22);
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* PT: Altera a cor do botão quando o utilizador passa o rato por cima. */
-/* EN: Changes the button color when the user hovers over it. */
+/* PT: Muda o botão para azul e eleva ligeiramente quando o cliente passa o cursor. */
+/* EN: Changes the button to blue and slightly lifts it when the customer hovers. */
 .product-card button:hover {
-    background-color: #374151;
+    background-color: #2563eb;
+    transform: translateY(-3px);
+    box-shadow: 0 14px 28px rgba(37, 99, 235, 0.28);
 }
 
-/* PT: Mostra visualmente que o botão está temporariamente desativado. */
-/* EN: Visually shows that the button is temporarily disabled. */
+/* PT: Mostra visualmente que o botão está temporariamente bloqueado durante o feedback de adicionar. */
+/* EN: Visually shows that the button is temporarily locked during the add feedback. */
 .product-card button:disabled {
-    background-color: #777;
+    background-color: #64748b;
+    color: #e2e8f0;
     cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
 }
